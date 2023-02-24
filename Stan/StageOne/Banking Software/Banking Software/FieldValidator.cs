@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Banking_Software
 {
-    public class Validator
+    public class FieldValidator
     {
         public bool field_validator(string x)
         {
