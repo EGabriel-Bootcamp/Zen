@@ -17,7 +17,10 @@ namespace Banking_Software
         string password { get; set; }
         int age { get; set; }
         int phone { get; set; }
-        int attempts = 3;
+        const int attempts = 3;//remember to remove 'const' if it messes with the login recursion
+        const string exitMessage = "GOOD BYE";
+        int accountBalance { get; set; }
+       
         
         
 
@@ -126,7 +129,54 @@ namespace Banking_Software
                
                 
             }
-               
+         
+        }
+
+
+
+        public void Deposit()
+        {
+            //collecting deposit input
+            Console.WriteLine("How much do you wish to deposit");
+            string depositInput = Console.ReadLine();
+
+            //Validating user input
+            bool isDepositValid = int.TryParse( depositInput, out int depositAmount );
+
+            if (isDepositValid == true)
+            {
+
+                accountBalance = accountBalance + depositAmount;
+                Console.WriteLine($"Your deposit of: {depositAmount} was successful");
+                Console.WriteLine("Repy \n" +
+                    " 1 to deposit again.\n" +
+                    "2 to withdraw \n" +
+                    "press any key to exit");
+                string depositReply = Console.ReadLine();
+                
+                //conditional to deposit again, withdraw or exit
+                if (depositReply == "1")
+                {
+                    Deposit();
+                }
+                else if (depositReply == "2")
+                {
+                    //implement withdrawal
+                }
+                else
+                {
+                    Console.WriteLine(exitMessage);
+                }
+            }
+            else
+            {
+                //if the input amount is not valid the user would be prompted
+                //And the deposit method would be called again
+
+                Console.WriteLine("Please input a valid non-negative amount");
+                Deposit();
+            }
+
         }
     }
 
