@@ -178,6 +178,17 @@ namespace Banking_Software
             }
 
         }
+        public void viewBalance()
+        {
+            //creating the balance check time
+            DateTime timeObject = DateTime.Now;
+            string time = timeObject.ToString();
+            
+
+            Console.WriteLine($"your account balance as of {time} is:");
+            Console.WriteLine(accountBalance);
+        }
+
     }
 
    
