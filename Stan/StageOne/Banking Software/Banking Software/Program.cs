@@ -10,6 +10,9 @@ namespace Banking_Software
     {
         static void Main(string[] args)
         {
+
+            Bank FirstBank = new Bank();
+            FirstBank.SignUp();
         }
     }
 }
