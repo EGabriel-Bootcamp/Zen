@@ -48,16 +48,26 @@ namespace Banking_Software
             Console.WriteLine("Email: (xxxxx@xx.xxx)");
             email = Console.ReadLine();
 
-            Console.WriteLine("Age:");
-            string Age = Console.ReadLine();
-            age = int.Parse(Age);
-
-            Console.WriteLine("Phone number:");
-            string Phone = Console.ReadLine();
-            phone = int.Parse(Phone);
-
+           
             Console.WriteLine("Set a password:");
             password = Console.ReadLine();
+            try
+            {
+                Console.WriteLine("Age:");
+                string Age = Console.ReadLine();
+                age = int.Parse(Age);
+
+                Console.WriteLine("Phone number:");
+                string Phone = Console.ReadLine();
+                phone = int.Parse(Phone);
+            }
+            catch (Exception e)
+            {
+               // Console.WriteLine(e.Message);
+                Console.WriteLine("\nEnter valid Integer type for Age and/or Phone number \n");
+                
+            }
+
 
 
 
@@ -69,7 +79,7 @@ namespace Banking_Software
             bool allValid =
                checker.field_validator(username)
               && checker.field_validator(email)
-              && checker.field_validator(Age)
+              && checker.field_validator(age)
               && checker.field_validator(phone)
               && checker.field_validator(password);
 
@@ -91,8 +101,10 @@ namespace Banking_Software
             }
             else
             {
-                Console.WriteLine("SEEMS THERE WAS AN EMPTY FIELD \n" +
-                    "Please try again.");
+                Console.WriteLine("\n" +
+                    "SEEMS THERE WAS AN EMPTY FIELD OR A fORMAT ISSUE  \n" +
+                    "Please try again." +
+                    "\n");
                 SignUp();
             }
              
