@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 
- 
+
 
 namespace Banking_Software
 {
@@ -35,41 +35,43 @@ namespace Banking_Software
         //Signup method
         public void SignUp()
         {
-            
+
             Console.WriteLine("PLEASE PROVIDE YOUR" +
-                " PERSONAL INFORMATION TO SIGN UP \n"  +
+                " PERSONAL INFORMATION TO SIGN UP \n" +
                 "ENTER THE CORRESPONDING " +
-                "DETAILS AS YOU ARE BEING PROMPTED");
+                "DETAILS AS YOU ARE BEING PROMPTED\n\n");
 
             //prompting, collecting and parsing user details
-            Console.WriteLine("Select a Username:");
+            Console.WriteLine("Selct a Username:");
             username = Console.ReadLine();
+            Console.WriteLine("\n");
 
-            Console.WriteLine("Email: (xxxxx@xx.xxx)");
-            email = Console.ReadLine();
-
-           
             Console.WriteLine("Set a password:");
             password = Console.ReadLine();
+            Console.WriteLine("\n");
+
+            Console.WriteLine("Email:");
+            email = Console.ReadLine();
+            Console.WriteLine("\n");
+
             try
             {
                 Console.WriteLine("Age:");
                 string Age = Console.ReadLine();
                 age = int.Parse(Age);
+                Console.WriteLine("\n");
 
                 Console.WriteLine("Phone number:");
                 string Phone = Console.ReadLine();
                 phone = int.Parse(Phone);
+                Console.WriteLine("\n");
             }
             catch (Exception e)
             {
-               // Console.WriteLine(e.Message);
+                // Console.WriteLine(e.Message);
                 Console.WriteLine("\nEnter valid Integer type for Age and/or Phone number \n");
-                
+
             }
-
-
-
 
             //creating an object "checker" from the FieldValidator class, this would be used to validate all fields of signup input
             FieldValidator checker = new FieldValidator();
@@ -86,11 +88,11 @@ namespace Banking_Software
 
 
             //Conditional to take user to login page if all fields are valid or perform recursion if any field is invalid
-            if ( allValid == true)
+            if (allValid == true)
             {
                 //saving credentials to text file
-               string passwordPath = @"savedPassword.txt";
-               File.WriteAllText(passwordPath, password);
+                string passwordPath = @"savedPassword.txt";
+                File.WriteAllText(passwordPath, password);
 
                 string usernamePath = @"savedUsername.txt";
                 File.WriteAllText(usernamePath, password);
@@ -107,14 +109,14 @@ namespace Banking_Software
                     "\n");
                 SignUp();
             }
-             
+
 
 
         }
         //Login method  
-        public void Login(ref int attempt )
+        public void Login(ref int attempt)
         {
-              
+
             Console.WriteLine("\n\n\n");
             Console.WriteLine("LOGIN \n" +
                 $"PLEASE NOTE THAT YOU HAVE {attempt} ATTEMPT(S) LEFT!");
@@ -145,15 +147,15 @@ namespace Banking_Software
                 Console.WriteLine("XXXX Invalid Username or Password  XXXX\n" +
                     "Try again");
                 cleared = false;
-                
+
             }
 
 
             //Final login Verification 
-            /*this conditional crosschecks the details with those on the database if they match the user is logged in 
-             * and gets to perform the intended operation but if the credentials donot match it continously 
+            /*this conditional crosschecks the details with those on the database if they match, the user is logged in 
+                and gets to perform the intended operation but if the credentials donot match it continously 
              * reduces the number of attempts from 3 till it gets to 0 */
-            if ( cleared == true && attempt > 0)
+            if (cleared == true && attempt > 1)
             {
                 Console.WriteLine("\n\n\n");
                 Console.WriteLine("LOGIN SUCCESSFUL!");
@@ -163,57 +165,45 @@ namespace Banking_Software
                     "2 for withdrawal \n" +
                     "3 to view balance \n" +
                     "4 to view account summary");
-                string loginRequest = Console.ReadLine();
+                string endOfLoginRequest = Console.ReadLine();
 
 
-                //Defining the method for login operation that would recall itself when a user makes an invalid input
-                void LoginOperation()
+                //switch to process end of Login prompt reply
+                switch (endOfLoginRequest)
                 {
-                    if (loginRequest == "1")
-                    {
+                    case "1":
                         Deposit();
-                    }
-                    else if (loginRequest == "2")
-                    { 
+                        break;
+                    case "2":
                         Withdraw();
-                    }
-                    else if (loginRequest == "3")
-                    {
+                        break;
+                    case "3":
                         ViewBalance();
-                    }
-                    else if (loginRequest == "4")
-                    {
+                        break;
+                    case "4":
                         ViewAccountSummary();
-                    }
+                        break;
 
-                    else
-                    {
-                        Console.WriteLine("You did not select a valid input");
-                        LoginOperation();
-
-                    }
                 }
 
 
 
-                //calling the loginOperation method
-                LoginOperation();
-                 
             }
-            else if (cleared == false && attempt > 0)
+
+            else if (cleared == false && attempt > 1)
             {
                 attempt = attempt - 1;
                 Login(ref attempt);
             }
 
-            else if (cleared == false && attempt == 0)
+            else if (cleared == false && attempt == 1)
             {
-                Console.WriteLine("Number of attempts exceeded");
+                Console.WriteLine("\nNUMBER OF ATTEMPTS EXCEEEDED!!!!");
                 Console.WriteLine(exitMessage);
                 Console.ReadLine();
             }
- 
-         
+
+
         }
 
 
@@ -235,14 +225,14 @@ namespace Banking_Software
 
 
             //Validating user input
-            bool isDepositValid = int.TryParse( depositInput, out int depositAmount );
+            bool isDepositValid = int.TryParse(depositInput, out int depositAmount);
 
             //Making the deposit
             if (isDepositValid == true && depositAmount >= 0 && depositAmount != 0)
             {
 
                 accountBalance = accountBalance + depositAmount;
-                
+
                 //creating transaction details
                 string transactionDetails = $"Transaction type:{transactionType}\n" +
                     $"Deposit Date and Time: {time} \n" +
@@ -268,30 +258,29 @@ namespace Banking_Software
                     "3 to view your balance\n" +
                     "4 to view your account summary\n" +
                     "press any key to exit");
-                string depositReply = Console.ReadLine();
-                
+                string endOfDepositReply = Console.ReadLine();
 
-                //conditional to deposit again, withdraw or exit
-                if (depositReply == "1")
+                //SWITCH to process end of deposit prompt reply
+                switch (endOfDepositReply)
                 {
-                    Deposit();
+                    case "1":
+                        Deposit();
+                        break;
+                    case "2":
+                        Withdraw();
+                        break;
+                    case "3":
+                        ViewBalance();
+                        break;
+                    case "4":
+                        ViewAccountSummary();
+                        break;
+                    default:
+                        Console.WriteLine(exitMessage);
+                        break;
+
                 }
-                else if (depositReply == "2")
-                {
-                    Withdraw();
-                }
-                else if (depositReply == "3")
-                {
-                    ViewBalance();
-                }
-                else if (depositReply == "4")
-                {
-                    ViewAccountSummary();
-                }
-                else
-                {
-                    Console.WriteLine(exitMessage);
-                }
+
             }
             else
             {
@@ -329,13 +318,13 @@ namespace Banking_Software
 
                 accountBalance = accountBalance - withdrawnAmount;
                 Console.WriteLine("SUCCESSFUL!");
-               
+
 
 
                 //creating transaction details
                 string transactionDetails = $"Transaction type:{transactionType}\n" +
                     $"Withdrawal Date and Time: {time} \n" +
-                    $"===Withdrawn Amount: {withdrawnAmount} ===\n" +
+                    $"=== Withdrawn Amount: {withdrawnAmount} ===\n" +
                     $"Current Balance In account: {accountBalance}" +
                     $"\n\n";
                 Console.WriteLine(transactionDetails);
@@ -343,7 +332,7 @@ namespace Banking_Software
 
                 //Writing transaction details
                 string databasePath = @"database.txt";
-                using (StreamWriter sw = new StreamWriter( databasePath, true))
+                using (StreamWriter sw = new StreamWriter(databasePath, true))
                 {
                     sw.WriteLine(transactionDetails);
                 }
@@ -356,30 +345,28 @@ namespace Banking_Software
                     "3 to view your balance\n" +
                     "4 to view account Summary \n" +
                     "press any key to exit");
-                string withdrawReply = Console.ReadLine();
+                string endOfWithdrawalReply = Console.ReadLine();
 
-                if (withdrawReply == "1")
-                {
-                    Withdraw();
-                }
-                else if (withdrawReply == "2")
-                {
-                    Deposit();
-                }
-                else if (withdrawReply == "3")
-                {
-                    ViewBalance();
-                }
-                else if (withdrawReply == "4")
-                {
-                    ViewAccountSummary();
-                }
 
-                else
+                //switch to process end of withdrawal reply
+                switch (endOfWithdrawalReply)
                 {
-                    Console.WriteLine(exitMessage);
+                    case "1":
+                        Withdraw();
+                        break;
+                    case "2":
+                        Deposit();
+                        break;
+                    case "3":
+                        ViewBalance();
+                        break;
+                    case "4":
+                        ViewAccountSummary();
+                        break;
+                    default:
+                        Console.WriteLine(exitMessage);
+                        break;
                 }
-
             }
             else
             {
@@ -407,25 +394,28 @@ namespace Banking_Software
                    " 1 to withdraw \n" +
                    "2 to deposit \n" +
                    "3 to view your balance again \n" +
+                   "4 to view account summary/n" +
                    "press any key to exit");
-            string reply = Console.ReadLine();
+            string endOfViewBalanceReply = Console.ReadLine();
 
-            if (reply == "1")
+            switch (endOfViewBalanceReply)
             {
-                Withdraw();
-            }
-            else if (reply == "2")
-            {
-                Deposit();
-            }
-            else if (reply == "3")
-            {
-                ViewBalance();
-            }
+                case "1":
+                    Withdraw();
+                    break;
+                case "2":
+                    Deposit();
+                    break;
+                case "3":
+                    ViewBalance();
+                    break;
+                case "4":
+                    ViewAccountSummary();
+                    break;
+                default:
+                    Console.WriteLine(exitMessage);
+                    break;
 
-            else
-            {
-                Console.WriteLine(exitMessage);
             }
 
         }
@@ -440,41 +430,42 @@ namespace Banking_Software
             {
                 string fileContent = reader.ReadToEnd();
                 Console.WriteLine(fileContent);
-                
+
 
                 Console.WriteLine("Repy \n" +
                        "1 to withdraw \n" +
                        "2 to deposit \n" +
                        "3 to view your balance\n " +
                        "press any key to exit");
-                string reply = Console.ReadLine();
+                string endOfViewAccountSummaryReply = Console.ReadLine();
 
-                if (reply == "1")
-                {
-                    Withdraw();
-                }
-                else if (reply == "2")
-                {
-                    Deposit();
-                }
-                else if (reply == "3")
-                {
-                    ViewBalance();
-                }
 
-                else
+                //switch to process end of view account summary
+                switch (endOfViewAccountSummaryReply)
                 {
-                    Console.WriteLine(exitMessage);
+                    case "1":
+                        Withdraw();
+                        break;
+                    case "2":
+                        Deposit();
+                        break;
+                    case "3":
+                        ViewBalance();
+                        break;
+                    default:
+                        Console.WriteLine(exitMessage);
+                        break;
+
+
                 }
 
             }
 
+
         }
 
 
+
+
     }
-
-   
-
-         
 }
