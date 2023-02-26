@@ -30,6 +30,24 @@ namespace Banking_Software
             string time = timeObject.ToString();
             return time;
         }
+        
+        
+       //creating a field validator class
+        public class FieldValidator
+        {
+            public bool field_validator(string x)
+            {
+                // Validate string input
+                return !string.IsNullOrEmpty(x);
+            }
+
+            public bool field_validator(int x)
+            {
+                // Validate integer input
+                return x > 0 && x < 100;
+            }
+        }
+
 
 
         //Signup method
