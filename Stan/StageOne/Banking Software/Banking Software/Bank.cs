@@ -442,6 +442,7 @@ namespace Banking_Software
         public void ViewAccountSummary()
         {
             Console.WriteLine("\n\n\n");
+            Console.WriteLine("BELOW IS YOUR ACCOUNT SUMMARY");
             string databasePath = @"database.txt";
 
             using (StreamReader reader = new StreamReader(databasePath))
